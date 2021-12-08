@@ -34,9 +34,7 @@ const validateScheme = (req, res, next) => {
   try{
     const { scheme_name } = req.body;
     if(!scheme_name || scheme_name === '' || typeof scheme_name !== 'string'){
-    // const valid = await schemeSchema.validate(req.body)
-    // req.body = valid
-    next({ status: 400, message: 'invalid scheme_name'});
+      next({ status: 400, message: 'invalid scheme_name'});
     }else{
       next();
     }
@@ -57,15 +55,21 @@ const validateScheme = (req, res, next) => {
   }
 */
 const validateStep = async (req, res, next) => {
-  try{
-    const valid = await steps.validate(req.body);
-    req.body = valid;
-    next();
-  }catch(err){
-    next({ status: 400, message: err.message});
-  }
-};
 
+const { instructions, step_number } = req.body
+  if( 
+    
+    instructions === undefined ||
+    typeof instructions !== 'string'||!instructions.trim()||typeof step_number !== 'number' || step_number < 1
+  ) {
+    next({
+      status:400,
+      message: 'invalid step'
+    })
+  } else {
+    next()
+  }
+}
 
 module.exports = {
   checkSchemeId,
